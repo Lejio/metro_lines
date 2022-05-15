@@ -15,11 +15,29 @@ def create_station(station_name):
 
 
 def connect_stations(first_station, second_station, line_name):
-    connected_stations[line_name] = [first_station, second_station]
+    # connected_stations[line_name] = [first_station, second_station]
+    stations[first_station].append({line_name: [first_station, second_station]})
 
 
 def plan_trip(starting_station, ending_station):
-    pass
+
+    trip_planner.append(starting_station)
+    print(trip_planner)
+    print(starting_station, ending_station)
+
+    if starting_station == ending_station:
+        # trip_planner.append(starting_station)
+        return
+
+    elif len(stations[starting_station]) == 0:
+        trip_planner.remove(starting_station)
+
+    for line in stations[starting_station]:
+        for key in line:
+            if ending_station in trip_planner:
+                return
+            else:
+                plan_trip(line[key][1], ending_station)
 
 
 def create_train(train_id, line_name, starting_position):
@@ -75,9 +93,16 @@ def metro_station(system):
         if user_split[0] == "connect" and user_split[1] == "stations":
             connect_stations(user_split[2], user_split[3], user_split[4])
 
+        if user_split[0] == "plan" and user_split[1] == "trip":
+            trip_planner = []
+            plan_trip(user_split[2], user_split[3])
+            print(trip_planner)
+
         user_input = answer_prompt(system)
 
     print(connected_stations)
+    print(stations)
+    print(trains)
 
 
 def answer_prompt(system):
@@ -87,7 +112,9 @@ def answer_prompt(system):
 
 if __name__ == '__main__':
     connected_stations = {}
-    stations = {}
+    already_been = []
+    trip_planner = []
+    stations = {'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}], 'B': [{'B-D': ['B', 'D']}, {'B-E': ['B', 'E']}], 'C': [{'C-D': ['C', 'D']}], 'D': [], 'E': []}
     trains = {}
-    metro_name = input(USER_INPUT)
-    metro_station(metro_name)
+    # metro_name = input(USER_INPUT)
+    metro_station("Alphabet System")
