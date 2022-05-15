@@ -15,7 +15,7 @@ def create_station(station_name):
 
 
 def connect_stations(first_station, second_station, line_name):
-    pass
+    connected_stations[line_name] = [first_station, second_station]
 
 
 def plan_trip(starting_station, ending_station):
@@ -42,16 +42,16 @@ def display_trains():
         print(f"Current Position: {trains[key][1]}")
 
 
-def get_station_info(station_name):
-    pass
-
-
-def get_train_info(train_id):
-    pass
-
-
-def exit():
-    pass
+# def get_station_info(station_name):
+#     pass
+#
+#
+# def get_train_info(train_id):
+#     pass
+#
+#
+# def exit():
+#     pass
 
 
 def metro_station(system):
@@ -72,7 +72,12 @@ def metro_station(system):
         if user_split[0] == "display" and user_split[1] == "trains":
             display_trains()
 
+        if user_split[0] == "connect" and user_split[1] == "stations":
+            connect_stations(user_split[2], user_split[3], user_split[4])
+
         user_input = answer_prompt(system)
+
+    print(connected_stations)
 
 
 def answer_prompt(system):
@@ -81,6 +86,7 @@ def answer_prompt(system):
 
 
 if __name__ == '__main__':
+    connected_stations = {}
     stations = {}
     trains = {}
     metro_name = input(USER_INPUT)
