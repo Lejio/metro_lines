@@ -56,5 +56,15 @@ def exit():
     pass
 
 
+def metro_station():
+    pass
+
+
+def answer_prompt():
+    pass
+
+
 if __name__ == '__main__':
+
+
     pass
