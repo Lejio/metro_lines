@@ -15,18 +15,13 @@ def create_station(station_name):
 
 
 def connect_stations(first_station, second_station, line_name):
-    # connected_stations[line_name] = [first_station, second_station]
     stations[first_station].append({line_name: [first_station, second_station]})
 
 
 def plan_trip(starting_station, ending_station):
-
     trip_planner.append(starting_station)
-    print(trip_planner)
-    print(starting_station, ending_station)
 
     if starting_station == ending_station:
-        # trip_planner.append(starting_station)
         return
 
     elif len(stations[starting_station]) == 0:
@@ -38,6 +33,32 @@ def plan_trip(starting_station, ending_station):
                 return
             else:
                 plan_trip(line[key][1], ending_station)
+
+
+def display_trip():
+    is_there_train = False
+    if len(trains) > 0:
+        is_there_train = True
+
+    print("Start on ")
+
+    # for station in trip_planner:
+    #     for i in range(len(stations[station])):
+    #         for key in stations[station][i]:
+    #             if stations[station][i][key][0] == station:
+    #                 print(stations[station][i][key][0])
+    #                 print(key)
+    # print("")
+    # print("")
+
+    # print(trip_planner)
+    # for i in range(len(trip_planner)):
+    #     print(trip_planner[i])
+    #     for dict in stations[trip_planner[i]]:
+    #         print(dict)
+
+    # for j in range(len(stations[trip_planner[i]])):
+    #     print(len(stations[trip_planner[i]]), trip_planner[i])
 
 
 def create_train(train_id, line_name, starting_position):
@@ -74,7 +95,6 @@ def display_trains():
 
 def metro_station(system):
     user_input = answer_prompt(system)
-
     while user_input != "quit":
         user_split = user_input.split()
 
@@ -94,13 +114,10 @@ def metro_station(system):
             connect_stations(user_split[2], user_split[3], user_split[4])
 
         if user_split[0] == "plan" and user_split[1] == "trip":
-            trip_planner = []
             plan_trip(user_split[2], user_split[3])
-            print(trip_planner)
-
+            display_trip()
         user_input = answer_prompt(system)
 
-    print(connected_stations)
     print(stations)
     print(trains)
 
@@ -111,10 +128,9 @@ def answer_prompt(system):
 
 
 if __name__ == '__main__':
-    connected_stations = {}
-    already_been = []
     trip_planner = []
-    stations = {'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}], 'B': [{'B-D': ['B', 'D']}, {'B-E': ['B', 'E']}], 'C': [{'C-D': ['C', 'D']}], 'D': [], 'E': []}
-    trains = {}
+    stations = {'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}], 'B': [{'B-D': ['B', 'D']}, {'B-E': ['B', 'E']}],
+                'C': [{'C-D': ['C', 'D']}], 'D': [], 'E': []}
+    trains = {'AB-Train': ['A-B', 'A'], 'AC_Train': ['A-C', 'A'], 'BD-Train': ['B-D', 'D'], 'CD-Train': ['C-D', 'C']}
     # metro_name = input(USER_INPUT)
     metro_station("Alphabet System")
