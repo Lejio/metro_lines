@@ -16,23 +16,45 @@ def create_station(station_name):
 
 def connect_stations(first_station, second_station, line_name):
     stations[first_station].append({line_name: [first_station, second_station]})
+    possible_stations[first_station].append({line_name: [first_station, second_station]})
 
 
 def plan_trip(starting_station, ending_station):
+    counter = 0
     trip_planner.append(starting_station)
+    print(trip_planner)
 
     if starting_station == ending_station:
+        # completed_trip = trip_planner
         return
 
     elif len(stations[starting_station]) == 0:
+        # print(f"Removing {starting_station}")
         trip_planner.remove(starting_station)
+        return
+
+    # elif len(stations[starting_station]) == 0
 
     for line in stations[starting_station]:
+        # print(line, "line")
         for key in line:
+            # print(line[key][1])
             if ending_station in trip_planner:
                 return
             else:
                 plan_trip(line[key][1], ending_station)
+        counter += 1
+        # print(counter, starting_station)
+        if counter == len(stations[starting_station]) and ending_station not in trip_planner:
+            trip_planner.remove(starting_station)
+
+    # stations = {
+    # 'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}],
+    # 'B': [{'B-D': ['B', 'D']}],
+    # 'C': [{'C-D': ['C', 'D']}, {'C-E': ['C', 'E']}],
+    # 'D': [],
+    # 'E': []
+    # }
 
 
 def display_trip():
@@ -40,25 +62,9 @@ def display_trip():
     if len(trains) > 0:
         is_there_train = True
 
-    print("Start on ")
-
-    # for station in trip_planner:
-    #     for i in range(len(stations[station])):
-    #         for key in stations[station][i]:
-    #             if stations[station][i][key][0] == station:
-    #                 print(stations[station][i][key][0])
-    #                 print(key)
-    # print("")
-    # print("")
-
-    # print(trip_planner)
+    print("Start on the")
     # for i in range(len(trip_planner)):
-    #     print(trip_planner[i])
-    #     for dict in stations[trip_planner[i]]:
-    #         print(dict)
-
-    # for j in range(len(stations[trip_planner[i]])):
-    #     print(len(stations[trip_planner[i]]), trip_planner[i])
+    #     if
 
 
 def create_train(train_id, line_name, starting_position):
@@ -95,7 +101,7 @@ def display_trains():
 
 def metro_station(system):
     user_input = answer_prompt(system)
-    while user_input != "quit":
+    while user_input != "exit":
         user_split = user_input.split()
 
         if user_split[0] == "create" and user_split[1] == "station":
@@ -115,11 +121,14 @@ def metro_station(system):
 
         if user_split[0] == "plan" and user_split[1] == "trip":
             plan_trip(user_split[2], user_split[3])
+            print(trip_planner)
             display_trip()
+            # trip_planner = []
         user_input = answer_prompt(system)
 
     print(stations)
     print(trains)
+    print(len(stations))
 
 
 def answer_prompt(system):
@@ -129,8 +138,18 @@ def answer_prompt(system):
 
 if __name__ == '__main__':
     trip_planner = []
-    stations = {'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}], 'B': [{'B-D': ['B', 'D']}, {'B-E': ['B', 'E']}],
-                'C': [{'C-D': ['C', 'D']}], 'D': [], 'E': []}
+    completed_trip = []
+    stations = {
+    'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}],
+    'B': [{'B-D': ['B', 'D']}],
+    'C': [{'C-D': ['C', 'D']}, {'C-E': ['C', 'E']}],
+    'D': [{'D-F': ['D', 'F']}, {'D-G': ['D', 'G']}],
+    'E': [],
+    'F': [],
+    'G': []
+    }
+    possible_stations = {'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}], 'B': [{'B-D': ['B', 'D']}],
+                'C': [{'C-D': ['C', 'D']}, {'B-E': ['B', 'E']}], 'D': [], 'E': []}
     trains = {'AB-Train': ['A-B', 'A'], 'AC_Train': ['A-C', 'A'], 'BD-Train': ['B-D', 'D'], 'CD-Train': ['C-D', 'C']}
     # metro_name = input(USER_INPUT)
     metro_station("Alphabet System")
