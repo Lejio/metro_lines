@@ -24,8 +24,6 @@ def connect_stations(first_station, second_station, line_name, stations):
 
 def plan_trip(starting_station, ending_station, trip_planner, stations, lines,):
     counter = 0
-    print(lines)
-    print(trip_planner)
     if starting_station in trip_planner:
         lines.remove(lines[-1])
         return
@@ -44,8 +42,11 @@ def plan_trip(starting_station, ending_station, trip_planner, stations, lines,):
 
     for line in stations[starting_station]:
         for key in line:
-            lines.append(key)
-            plan_trip(line[key][1], ending_station, trip_planner, stations, lines)
+            if ending_station in trip_planner:
+                return
+            else:
+                lines.append(key)
+                plan_trip(line[key][1], ending_station, trip_planner, stations, lines)
         counter += 1
 
         if counter == len(stations[starting_station]) and ending_station not in trip_planner:
@@ -55,12 +56,10 @@ def plan_trip(starting_station, ending_station, trip_planner, stations, lines,):
 
 def display_trip(trip_planner, lines):
     cnt = 0
-    # trip_planner.remove(trip_planner[1])
     print(f"Start on the {lines[0]}", "-->", end=" ")
     for i in range(len(lines) - 1):
         if i != len(lines):
             if lines[i] == lines[i + 1] and cnt == 0:
-                # print(lines[i], lines[i + 1])
                 cnt += 1
                 print(trip_planner[i], "-->", trip_planner[i + 1], end=" ")
             elif lines[i] == lines[i + 1]:
@@ -124,7 +123,7 @@ def metro_station(system):
     trip_planner = []
     lines = []
     trains = {}
-    # stations = {}
+    stations = {}
 
     user_input = answer_prompt(system)
     while user_input != "exit":
@@ -183,18 +182,18 @@ if __name__ == '__main__':
     #  'Fort-Totten': [{'Green': ['Fort-Totten', 'College-Park']}, {'Green': ['Fort-Totten', 'Columbia-Heights']}],
     #  'Columbia-Heights': [{'Green': ['Columbia-Heights', 'Fort-Totten']}]}
 
-    stations = {
-    'Greenbelt': [{'Green': ['Greenbelt', 'College-Park']}],
-     'College-Park': [{'Green': ['College-Park', 'Greenbelt']}, {'Green': ['College-Park', 'Fort-Totten']}],
-     'Fort-Totten': [{'Green': ['Fort-Totten', 'College-Park']}, {'Green': ['Fort-Totten', 'Columbia-Heights']},
-                     {'Red': ['Fort-Totten', 'Takoma']}],
-     'Columbia-Heights': [{'Green': ['Columbia-Heights', 'Fort-Totten']}, {'Green': ['Columbia-Heights', 'U-Street']}],
-     'Takoma': [{'Red': ['Takoma', 'Fort-Totten']}, {'Red': ['Takoma', 'Silver-Spring']}],
-     'Silver-Spring': [{'Red': ['Silver-Spring', 'Takoma']}, {'Red': ['Silver-Spring', 'Forest-Glen']}],
-     'Forest-Glen': [{'Red': ['Forest-Glen', 'Silver-Spring']}],
-     'U-Street': [{'Green': ['U-Street', 'Columbia-Heights']}, {'Green': ['U-Street', 'Shaw-Howard']}],
-     'Shaw-Howard': [{'Green': ['Shaw-Howard', 'U-Street']}, {'Green': ['Shaw-Howard', 'Gallery-Place']}],
-     'Mt-Vernon-Square': [], 'Gallery-Place': [{'Green': ['Gallery-Place', 'Shaw-Howard']}]}
+    # stations = {
+    # 'Greenbelt': [{'Green': ['Greenbelt', 'College-Park']}],
+    #  'College-Park': [{'Green': ['College-Park', 'Greenbelt']}, {'Green': ['College-Park', 'Fort-Totten']}],
+    #  'Fort-Totten': [{'Green': ['Fort-Totten', 'College-Park']}, {'Green': ['Fort-Totten', 'Columbia-Heights']},
+    #                  {'Red': ['Fort-Totten', 'Takoma']}],
+    #  'Columbia-Heights': [{'Green': ['Columbia-Heights', 'Fort-Totten']}, {'Green': ['Columbia-Heights', 'U-Street']}],
+    #  'Takoma': [{'Red': ['Takoma', 'Fort-Totten']}, {'Red': ['Takoma', 'Silver-Spring']}],
+    #  'Silver-Spring': [{'Red': ['Silver-Spring', 'Takoma']}, {'Red': ['Silver-Spring', 'Forest-Glen']}],
+    #  'Forest-Glen': [{'Red': ['Forest-Glen', 'Silver-Spring']}],
+    #  'U-Street': [{'Green': ['U-Street', 'Columbia-Heights']}, {'Green': ['U-Street', 'Shaw-Howard']}],
+    #  'Shaw-Howard': [{'Green': ['Shaw-Howard', 'U-Street']}, {'Green': ['Shaw-Howard', 'Gallery-Place']}],
+    #  'Mt-Vernon-Square': [], 'Gallery-Place': [{'Green': ['Gallery-Place', 'Shaw-Howard']}]}
     # trains = {'AB-Train': ['A-B', 'A'], 'AC_Train': ['A-C', 'A'], 'BD-Train': ['B-D', 'D'], 'CD-Train': ['C-D', 'C']}
     # stations = {'A': [{'A-B': ['A', 'B']}, {'A-C': ['A', 'C']}], 'B': [{'A-B': ['B', 'A']}, {'B-D': ['B', 'D']}], 'C': [{'C-D': ['C', 'D']}, {'A-C': ['C', 'A']}], 'D': [{'B-D': ['D', 'B']}, {'C-D': ['D', 'C']}]}
 
